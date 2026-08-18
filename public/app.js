@@ -5,7 +5,6 @@ const hostPanel = document.getElementById('hostPanel');
 const joinPanel = document.getElementById('joinPanel');
 const gameArea = document.getElementById('gameArea');
 
-// Các thành phần bảng kết quả
 const gameOverPanel = document.getElementById('gameOverPanel');
 const overlay = document.getElementById('overlay');
 const winnerText = document.getElementById('winnerText');
@@ -14,6 +13,10 @@ const btnStartGame = document.getElementById('btnStartGame');
 const playerListUI = document.getElementById('playerList');
 const playerCountUI = document.getElementById('playerCount');
 const waitingMsg = document.getElementById('waitingMsg');
+
+// Lấy 2 phần tử mới của nút Quản trò
+const gmControls = document.getElementById('gmControls');
+const btnToggleView = document.getElementById('btnToggleView');
 
 let myRole = '';
 let currentRoom = '';
@@ -24,7 +27,6 @@ document.getElementById('btnShowCreate').addEventListener('click', () => socket.
 document.getElementById('btnShowJoin').addEventListener('click', () => {
     mainMenu.style.display = 'none'; joinPanel.style.display = 'inline-block';
 });
-// Nút về sảnh của cả Game Over và Sảnh tạo phòng đều Load lại trang
 document.getElementById('btnBackFromHost').addEventListener('click', () => location.reload());
 document.getElementById('btnBackFromJoin').addEventListener('click', () => location.reload());
 document.getElementById('btnBackToLobby').addEventListener('click', () => location.reload());
@@ -80,8 +82,18 @@ socket.on('gameStarted', ({ deck, players }) => {
     document.getElementById('nameP2').innerText = p2Name;
 
     const cardGrid = document.getElementById('cardGrid'); cardGrid.innerHTML = ''; 
-    if (myRole === 'GM') cardGrid.classList.add('gm-view');
-    else cardGrid.classList.remove('gm-view');
+    
+    // MỚI: Nếu là GM thì hiện nút bấm và bật soi chữ
+    if (myRole === 'GM') {
+        cardGrid.classList.add('gm-view');
+        gmControls.style.display = 'block';
+        // Reset nút về mặc định
+        btnToggleView.innerText = "👁️ ẨN ĐÁP ÁN (Đang Mở)";
+        btnToggleView.style.background = "linear-gradient(45deg, #e74c3c, #c0392b)";
+    } else {
+        cardGrid.classList.remove('gm-view');
+        gmControls.style.display = 'none';
+    }
 
     deck.forEach((card) => {
         const cardElement = document.createElement('div');
@@ -99,6 +111,22 @@ socket.on('gameStarted', ({ deck, players }) => {
     });
 });
 
+// MỚI: Logic nhấn nút Ẩn/Hiện dành cho GM
+btnToggleView.addEventListener('click', () => {
+    const cardGrid = document.getElementById('cardGrid');
+    cardGrid.classList.toggle('gm-view'); // Bật/Tắt soi bài
+    
+    if (cardGrid.classList.contains('gm-view')) {
+        // Trạng thái đang soi bài -> Nút màu Đỏ mời bấm Ẩn
+        btnToggleView.innerText = "👁️ ẨN ĐÁP ÁN (Đang Mở)";
+        btnToggleView.style.background = "linear-gradient(45deg, #e74c3c, #c0392b)";
+    } else {
+        // Trạng thái đã giấu bài -> Nút màu Xanh mời bấm Hiện
+        btnToggleView.innerText = "🙈 HIỆN ĐÁP ÁN (Đang Ẩn)";
+        btnToggleView.style.background = "linear-gradient(45deg, #2ecc71, #27ae60)";
+    }
+});
+
 socket.on('cardFlipped', (cardId) => {
     const cardElement = document.querySelector(`.card[data-id='${cardId}']`);
     if (cardElement) cardElement.classList.add('flipped');
@@ -111,9 +139,7 @@ socket.on('cardsUnflipped', (cardIds) => {
     });
 });
 
-// MỚI: Nhận tín hiệu xóa thẻ
 socket.on('cardsMatched', (cardIds) => {
-    // Trễ 0.6 giây để người chơi kịp nhìn thấy mình vừa lật được chữ gì trước khi thẻ biến mất
     setTimeout(() => {
         cardIds.forEach(id => {
             const cardElement = document.querySelector(`.card[data-id='${id}']`);
@@ -171,7 +197,6 @@ socket.on('timerUpdate', (timeLeft) => {
     document.querySelector('#timerDisplay span').innerText = timeLeft;
 });
 
-// MỚI: Bật bảng xếp hạng thay vì Alert
 socket.on('gameOver', ({ scores, players }) => {
     document.getElementById('cardGrid').classList.add('locked');
     document.getElementById('turnTimeText').innerText = "HẾT GIỜ";
@@ -181,14 +206,12 @@ socket.on('gameOver', ({ scores, players }) => {
     if (scores.P1 > scores.P2) winner = `${players[0].name.toUpperCase()} THẮNG!`;
     else if (scores.P2 > scores.P1) winner = `${players[1].name.toUpperCase()} THẮNG!`;
     
-    // Gán dữ liệu vào bảng
     winnerText.innerText = winner;
     document.getElementById('finalNameP1').innerText = players[0].name;
     document.getElementById('finalScoreP1').innerText = scores.P1;
     document.getElementById('finalNameP2').innerText = players[1].name;
     document.getElementById('finalScoreP2').innerText = scores.P2;
     
-    // Hiển thị mượt mà sau 1 giây
     setTimeout(() => {
         overlay.style.display = 'block';
         gameOverPanel.style.display = 'block';

@@ -44,6 +44,13 @@
             <div class="badge">Vai trò: <span id="roleDisplay"></span></div>
         </div>
 
+        <!-- MỚI: Bảng điều khiển riêng của Quản trò (Chỉ GM mới thấy) -->
+        <div id="gmControls" style="display: none; margin-bottom: 20px;">
+            <button id="btnToggleView" class="glow-on-hover" style="background: linear-gradient(45deg, #e74c3c, #c0392b); padding: 10px 20px; font-size: 14px;">
+                👁️ ẨN ĐÁP ÁN (Đang Mở)
+            </button>
+        </div>
+
         <div id="scoreboard">
             <div class="score-box" id="boxP1">
                 <div class="player-name" id="nameP1">Player 1</div>
@@ -67,7 +74,6 @@
         <div id="cardGrid" class="grid"></div>
     </div>
 
-    <!-- MỚI: BẢNG TỔNG KẾT (GAME OVER) -->
     <div id="overlay"></div>
     <div id="gameOverPanel" class="panel">
         <h2 style="color: #ccc; margin-bottom: 5px;">KẾT QUẢ TRẬN ĐẤU</h2>
