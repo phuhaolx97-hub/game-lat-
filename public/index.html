@@ -50,7 +50,6 @@
                 <div id="scoreP1" class="score-num">0</div>
             </div>
             
-            <!-- Khu vực đếm ngược 15s ở giữa -->
             <div class="turn-status">
                 <h3 id="turnText">LƯỢT CỦA: <span id="currentTurnName">---</span></h3>
                 <div id="turnIndicatorContainer">
@@ -66,6 +65,27 @@
         </div>
         
         <div id="cardGrid" class="grid"></div>
+    </div>
+
+    <!-- MỚI: BẢNG TỔNG KẾT (GAME OVER) -->
+    <div id="overlay"></div>
+    <div id="gameOverPanel" class="panel">
+        <h2 style="color: #ccc; margin-bottom: 5px;">KẾT QUẢ TRẬN ĐẤU</h2>
+        <h1 id="winnerText" class="highlight-text" style="font-size: 3em; margin-bottom: 25px;">---</h1>
+        
+        <div class="final-score-board">
+            <div class="final-p1">
+                <div id="finalNameP1" style="font-size: 20px;">P1</div>
+                <div id="finalScoreP1" style="font-size: 45px; font-weight: 900; color: #00f2fe;">0</div>
+            </div>
+            <div style="font-size: 30px; font-weight: bold; margin: 0 20px;">VS</div>
+            <div class="final-p2">
+                <div id="finalNameP2" style="font-size: 20px;">P2</div>
+                <div id="finalScoreP2" style="font-size: 45px; font-weight: 900; color: #38ef7d;">0</div>
+            </div>
+        </div>
+
+        <button id="btnBackToLobby" class="glow-on-hover" style="margin-top: 25px;">Về sảnh chính</button>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>

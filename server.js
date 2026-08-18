@@ -11,24 +11,21 @@ app.use(express.static('public'));
 
 const rooms = {}; 
 
-// HÀM HỖ TRỢ: Bắt đầu đếm ngược 15s cho lượt chơi hiện tại
 function startTurnTimer(roomCode) {
     const room = rooms[roomCode];
     if (!room || room.isGameOver) return;
 
-    clearInterval(room.turnInterval); // Xóa đồng hồ cũ
-    room.turnTimeLeft = 15; // Set 15 giây
+    clearInterval(room.turnInterval); 
+    room.turnTimeLeft = 15; 
     io.to(roomCode).emit('turnTimerUpdate', room.turnTimeLeft);
 
     room.turnInterval = setInterval(() => {
         room.turnTimeLeft--;
         io.to(roomCode).emit('turnTimerUpdate', room.turnTimeLeft);
 
-        // NẾU HẾT 15 GIÂY -> TỰ ĐỘNG CƯỚP LƯỢT
         if (room.turnTimeLeft <= 0) {
             clearInterval(room.turnInterval);
             
-            // Nếu người chơi mới lật 1 thẻ mà hết giờ -> Tự động úp thẻ đó lại
             if (room.flippedCards.length === 1) {
                 const c = room.flippedCards[0];
                 c.isFlipped = false;
@@ -36,10 +33,9 @@ function startTurnTimer(roomCode) {
                 room.flippedCards = [];
             }
             
-            // Đổi lượt cho đối thủ
             room.currentTurn = room.currentTurn === 'P1' ? 'P2' : 'P1';
             io.to(roomCode).emit('turnChanged', room.currentTurn);
-            startTurnTimer(roomCode); // Chạy lại 15s cho đối thủ
+            startTurnTimer(roomCode); 
         }
     }, 1000);
 }
@@ -53,7 +49,7 @@ io.on('connection', (socket) => {
             gmSocket: socket.id,
             players: [], deck: [], scores: { P1: 0, P2: 0 },
             currentTurn: 'P1', flippedCards: [],
-            timeLeft: 0, timerInterval: null, turnInterval: null, turnTimeLeft: 15, // Thêm dữ liệu 15s
+            timeLeft: 0, timerInterval: null, turnInterval: null, turnTimeLeft: 15, 
             isGameOver: false, isStarted: false 
         };
         socket.join(roomCode);
@@ -86,10 +82,8 @@ io.on('connection', (socket) => {
             io.to(roomCode).emit('turnChanged', room.currentTurn); 
             io.to(roomCode).emit('timerUpdate', room.timeLeft); 
 
-            // Khởi động ĐỒNG HỒ 15S cho lượt đầu tiên
             startTurnTimer(roomCode);
 
-            // Khởi động ĐỒNG HỒ TỔNG
             room.timerInterval = setInterval(() => {
                 if (room.timeLeft > 0 && !room.isGameOver) {
                     room.timeLeft--;
@@ -97,7 +91,7 @@ io.on('connection', (socket) => {
                 } else if (room.timeLeft <= 0 && !room.isGameOver) {
                     room.isGameOver = true;
                     clearInterval(room.timerInterval);
-                    clearInterval(room.turnInterval); // Dừng luôn đồng hồ 15s
+                    clearInterval(room.turnInterval); 
                     io.to(roomCode).emit('gameOver', { scores: room.scores, players: room.players }); 
                 }
             }, 1000);
@@ -117,7 +111,6 @@ io.on('connection', (socket) => {
         io.to(roomCode).emit('cardFlipped', cardId);
 
         if (room.flippedCards.length === 2) {
-            // Tạm dừng đồng hồ 15s trong lúc đợi lật bài (1.5s)
             clearInterval(room.turnInterval); 
 
             const [card1, card2] = room.flippedCards;
@@ -126,11 +119,14 @@ io.on('connection', (socket) => {
                 card1.isMatched = true;
                 card2.isMatched = true;
                 room.scores[role] += 1; 
+                
+                // MỚI: Báo hiệu thẻ đã khớp để làm bốc hơi
+                io.to(roomCode).emit('cardsMatched', [card1.id, card2.id]);
+                
                 io.to(roomCode).emit('updateScore', room.scores);
                 room.flippedCards = [];
                 io.to(roomCode).emit('turnChanged', room.currentTurn); 
                 
-                // Đoán trúng -> Được chơi tiếp -> Reset lại 15s
                 startTurnTimer(roomCode); 
             } else {
                 setTimeout(() => {
@@ -138,12 +134,10 @@ io.on('connection', (socket) => {
                     card2.isFlipped = false;
                     io.to(roomCode).emit('cardsUnflipped', [card1.id, card2.id]);
                     
-                    // Đoán sai -> Đổi lượt
                     room.currentTurn = (room.currentTurn === 'P1') ? 'P2' : 'P1';
                     room.flippedCards = [];
                     io.to(roomCode).emit('turnChanged', room.currentTurn); 
                     
-                    // Bắt đầu đếm 15s cho người kia
                     startTurnTimer(roomCode); 
                 }, 1500);
             }
