@@ -11,6 +11,7 @@ app.use(express.static('public'));
 
 const rooms = {}; 
 
+// HÀM HỖ TRỢ: Đếm ngược 15s
 function startTurnTimer(roomCode) {
     const room = rooms[roomCode];
     if (!room || room.isGameOver) return;
@@ -120,14 +121,29 @@ io.on('connection', (socket) => {
                 card2.isMatched = true;
                 room.scores[role] += 1; 
                 
-                // MỚI: Báo hiệu thẻ đã khớp để làm bốc hơi
                 io.to(roomCode).emit('cardsMatched', [card1.id, card2.id]);
-                
                 io.to(roomCode).emit('updateScore', room.scores);
                 room.flippedCards = [];
-                io.to(roomCode).emit('turnChanged', room.currentTurn); 
+
+                // --- MỚI: KIỂM TRA ĐIỀU KIỆN KẾT THÚC SỚM ---
+                // Kiểm tra xem tất cả các thẻ trong bộ bài đã được lật trúng (isMatched) hết chưa
+                const isAllMatched = room.deck.every(c => c.isMatched);
                 
-                startTurnTimer(roomCode); 
+                if (isAllMatched) {
+                    room.isGameOver = true;
+                    clearInterval(room.timerInterval); // Cắt đồng hồ tổng
+                    clearInterval(room.turnInterval);  // Cắt đồng hồ 15s
+                    
+                    // Chờ 1 giây để thẻ cuối cùng kịp "bốc hơi" rồi mới vinh danh
+                    setTimeout(() => {
+                        io.to(roomCode).emit('gameOver', { scores: room.scores, players: room.players }); 
+                    }, 1000);
+                } else {
+                    // Nếu còn bài thì vẫn tiếp tục cho người đó chơi
+                    io.to(roomCode).emit('turnChanged', room.currentTurn); 
+                    startTurnTimer(roomCode); 
+                }
+
             } else {
                 setTimeout(() => {
                     card1.isFlipped = false;
