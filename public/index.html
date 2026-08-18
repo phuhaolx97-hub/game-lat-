@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Lật Thẻ Đối Kháng</title>
+    <!-- Phông chữ Google cao cấp -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- MENU CHÍNH -->
+    <div id="mainMenu" class="panel">
+        <h1 class="game-title">TRÒ CHƠI LẬT THẺ</h1>
+        <button id="btnShowCreate">Tạo phòng mới (Làm Quản trò)</button>
+        <button id="btnShowJoin">Vào phòng đã có (Người chơi)</button>
+    </div>
+
+    <!-- GÓC QUẢN TRÒ -->
+    <div id="hostPanel" class="panel" style="display: none;">
+        <h2>Mã phòng: <span id="hostRoomCode" class="highlight-text">----</span></h2>
+        
+        <div id="gmSettings">
+            <label>Thời gian ván chơi (giây): </label>
+            <input type="number" id="timeInput" value="60">
+        </div>
+
+        <div class="player-list-box">
+            <p>Người chơi đã vào: <span id="playerCount">0</span>/2</p>
+            <ul id="playerList"></ul>
+        </div>
+
+        <button id="btnStartGame" disabled>BẮT ĐẦU GAME</button>
+        <button id="btnBackFromHost" class="btn-secondary">Quay lại</button>
+    </div>
+
+    <!-- GÓC NGƯỜI CHƠI -->
+    <div id="joinPanel" class="panel" style="display: none;">
+        <h2>THAM GIA TRẬN ĐẤU</h2>
+        <input type="text" id="joinRoomCode" placeholder="Nhập mã phòng (4 số)" maxlength="4"><br>
+        <input type="text" id="joinPlayerName" placeholder="Nhập tên của bạn" maxlength="15"><br>
+        
+        <button id="btnJoinRoom">Vào Phòng</button>
+        <button id="btnBackFromJoin" class="btn-secondary">Quay lại</button>
+
+        <h3 id="waitingMsg" style="display: none; color: #f1c40f; margin-top: 20px;">Đang chờ chủ phòng bắt đầu...</h3>
+    </div>
+
+    <!-- BÀN CHƠI CHÍNH -->
+    <div id="gameArea" style="display: none;">
+        <div class="top-info">
+            <h2>Phòng: <span id="roomDisplay"></span> | Vai trò: <span id="roleDisplay"></span></h2>
+            <h2 id="timerDisplay">Thời gian: <span>--</span>s</h2>
+        </div>
+
+        <div id="scoreboard">
+            <div class="score-box" id="boxP1"><span id="nameP1">Player 1</span><span id="scoreP1" class="score-num">0</span></div>
+            <div class="score-box" id="boxP2"><span id="nameP2">Player 2</span><span id="scoreP2" class="score-num">0</span></div>
+        </div>
+        
+        <div id="turnIndicatorContainer"><div id="turnBar"></div></div>
+        <div id="cardGrid" class="grid"></div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
