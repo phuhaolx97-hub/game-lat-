@@ -1,137 +1,117 @@
-* { box-sizing: border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
     font-family: 'Nunito', sans-serif;
     text-align: center;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); 
+    /* Nền chuyển động sinh động */
+    background: linear-gradient(-45deg, #1e3c72, #2a5298, #112d4e, #3f72af);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
     color: white;
-    margin: 0;
-    padding: 20px;
     min-height: 100vh;
+    padding: 20px;
 }
 
-.game-title {
-    font-size: 2.5rem;
-    text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
-    margin-bottom: 30px;
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
+
+.game-title { font-size: 3rem; text-shadow: 0 0 15px rgba(255,255,255,0.8); margin-bottom: 20px; letter-spacing: 2px; }
 
 .panel {
     margin-top: 50px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);
     display: inline-block;
-    padding: 40px 50px;
+    padding: 40px;
     border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
 }
 
-.highlight-text { color: #f1c40f; font-size: 2.5em; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+.highlight-text { color: #f1c40f; font-size: 2.5em; text-shadow: 0 0 10px #f1c40f; }
 
 input {
-    padding: 15px;
-    font-size: 16px;
-    margin: 10px;
-    border-radius: 10px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.9);
-    text-align: center;
-    font-family: 'Nunito', sans-serif;
-    font-weight: bold;
-    color: #2c3e50;
-    outline: none;
-    transition: 0.3s;
+    padding: 15px; font-size: 16px; margin: 10px; border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.9);
+    text-align: center; font-family: 'Nunito', sans-serif; font-weight: bold; color: #2c3e50; outline: none;
 }
-input:focus { border-color: #3498db; box-shadow: 0 0 15px rgba(52, 152, 219, 0.6); }
-#timeInput { width: 90px; }
+input:focus { border-color: #00f2fe; box-shadow: 0 0 15px rgba(0, 242, 254, 0.8); }
 
+/* Nút bấm Neon Glow */
 button {
-    padding: 15px 25px;
-    font-size: 16px;
-    margin: 10px;
-    border-radius: 12px;
-    border: none;
-    background: linear-gradient(45deg, #FF512F 0%, #F09819 100%);
-    color: white;
-    font-weight: 900;
-    font-family: 'Nunito', sans-serif;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    padding: 15px 30px; font-size: 16px; margin: 10px; border-radius: 30px;
+    border: none; color: white; font-weight: 900; font-family: 'Nunito', sans-serif;
+    cursor: pointer; transition: 0.3s;
 }
-button:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
-button:active:not(:disabled) { transform: translateY(1px); }
-button:disabled { background: #7f8c8d; cursor: not-allowed; box-shadow: none; transform: none; }
-
-.btn-secondary { background: linear-gradient(45deg, #757F9A 0%, #D7DDE8 100%); color: #2c3e50; }
-
-.player-list-box {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    border-radius: 12px;
-    margin: 20px 0;
-    text-align: left;
+.glow-on-hover {
+    background: linear-gradient(45deg, #ff512f, #dd2476);
+    box-shadow: 0 4px 15px rgba(221, 36, 118, 0.4);
 }
-ul#playerList { list-style-type: none; padding: 0; font-size: 20px; color: #2ecc71; font-weight: bold;}
-ul#playerList li { padding: 5px 0; }
+.glow-on-hover:hover:not(:disabled) {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(221, 36, 118, 0.8);
+}
+button:disabled { background: #7f8c8d; cursor: not-allowed; opacity: 0.6; }
+.btn-secondary { background: rgba(255,255,255,0.2); border: 1px solid white; }
+.btn-secondary:hover { background: rgba(255,255,255,0.4); }
 
-.top-info { display: flex; justify-content: space-around; align-items: center; margin-bottom: 20px; }
-#timerDisplay { color: #f1c40f; background: rgba(0,0,0,0.4); padding: 10px 20px; border-radius: 15px; }
+.pulsing-text { color: #00f2fe; animation: pulseText 1.5s infinite; margin-top: 15px; }
+@keyframes pulseText { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
-#scoreboard { display: flex; justify-content: center; gap: 40px; margin-bottom: 20px; }
+.top-info { display: flex; justify-content: space-around; margin-bottom: 20px; }
+.badge { background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 20px; font-weight: bold; border: 1px solid rgba(255,255,255,0.2); }
+#timerDisplay span { color: #ff4b2b; font-size: 1.2em; text-shadow: 0 0 10px #ff4b2b; }
+
+#scoreboard { display: flex; justify-content: center; align-items: center; gap: 30px; margin-bottom: 30px; }
+
+/* Hộp người chơi - Phát sáng khi tới lượt */
 .score-box { 
-    padding: 15px 20px; 
-    border-radius: 15px; 
-    background: rgba(0, 0, 0, 0.4); 
-    width: 180px; 
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    font-size: 18px;
-    font-weight: bold;
+    padding: 15px 30px; border-radius: 20px; background: rgba(0, 0, 0, 0.5); 
+    width: 200px; border: 3px solid transparent; transition: 0.4s ease;
 }
-.score-num { color: #f1c40f; font-size: 32px; display: block; margin-top: 10px; text-shadow: 2px 2px 4px #000; }
+.player-name { font-size: 20px; font-weight: 900; letter-spacing: 1px; color: #aaa; }
+.score-num { font-size: 40px; font-weight: 900; color: white; display: block; margin-top: 5px; }
 
-#turnIndicatorContainer { width: 400px; height: 15px; background: rgba(0,0,0,0.5); margin: 0 auto 30px auto; border-radius: 15px; position: relative; overflow: hidden; border: 2px solid rgba(255,255,255,0.1); }
-#turnBar { width: 50%; height: 100%; background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 100%); position: absolute; left: 0; transition: left 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); border-radius: 15px; box-shadow: 0 0 10px rgba(255,65,108,0.8); }
-.turn-p2 #turnBar { left: 50%; background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%); box-shadow: 0 0 10px rgba(56,239,125,0.8); }
+/* Hiệu ứng tới lượt ai người đó SÁNG RỰC LÊN */
+.active-p1 { border-color: #00f2fe; box-shadow: 0 0 25px rgba(0,242,254, 0.8); transform: scale(1.1); }
+.active-p1 .player-name, .active-p1 .score-num { color: #00f2fe; text-shadow: 0 0 10px #00f2fe; }
 
+.active-p2 { border-color: #38ef7d; box-shadow: 0 0 25px rgba(56,239,125, 0.8); transform: scale(1.1); }
+.active-p2 .player-name, .active-p2 .score-num { color: #38ef7d; text-shadow: 0 0 10px #38ef7d; }
+
+/* THANH 15 GIÂY LƯỢT CHƠI */
+.turn-status { width: 300px; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); }
+#turnText { font-size: 14px; margin-bottom: 8px; color: #ccc; }
+#currentTurnName { color: white; font-size: 18px; font-weight: 900; }
+#turnIndicatorContainer { width: 100%; height: 10px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; margin: 10px 0; }
+#turnBar { height: 100%; width: 100%; background: #00f2fe; transition: width 1s linear, background-color 0.5s ease; border-radius: 10px; }
+#turnTimeText { font-size: 22px; font-weight: 900; color: white; }
+
+/* Báo động đỏ khi sắp hết 15s */
+.danger-bar { background: #ff416c !important; box-shadow: 0 0 15px #ff416c; }
+.danger-text { color: #ff416c !important; animation: pulseText 0.5s infinite; }
+
+/* Thẻ bài */
 .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; max-width: 900px; margin: 0 auto; perspective: 1000px; }
 .locked { pointer-events: none; opacity: 0.8; }
 
 .card {
-    width: 100%; 
-    aspect-ratio: 3 / 4; 
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+    width: 100%; aspect-ratio: 3/4; position: relative;
+    transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
     cursor: pointer;
 }
-
+.card:hover:not(.flipped) { transform: translateY(-5px); }
 .card.flipped { transform: rotateY(180deg); }
 
 .card-front, .card-back {
-    position: absolute;
-    width: 100%; height: 100%;
-    backface-visibility: hidden;
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px; font-weight: 900;
-    padding: 10px;
-    text-align: center; word-wrap: break-word;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 900; padding: 10px; text-align: center; word-wrap: break-word;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.1);
 }
-
-.card-front {
-    background: repeating-linear-gradient(45deg, #34495e, #34495e 10px, #2c3e50 10px, #2c3e50 20px);
-    border: 2px solid #bdc3c7;
-}
-
-.gm-view .card-front { color: rgba(255, 255, 255, 0.5); font-size: 14px; text-shadow: none; }
-
-.card-back {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    color: #2c3e50;
-    transform: rotateY(180deg); 
-    border: 3px solid #3498db;
-}
+.card-front { background: repeating-linear-gradient(45deg, #1f4037, #1f4037 10px, #99f2c8 10px, #99f2c8 12px); border-color: #99f2c8; }
+.gm-view .card-front { color: rgba(255, 255, 255, 0.8); font-size: 14px; background: rgba(0,0,0,0.7); }
+.card-back { background: radial-gradient(circle, #fbc2eb 0%, #a6c1ee 100%); color: #1e3c72; transform: rotateY(180deg); border: 3px solid white; font-size: 18px; }
