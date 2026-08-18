@@ -50,7 +50,7 @@ body::after {
 /* Các khối Panel kính mờ tinh tế */
 .panel {
     margin-top: 40px; 
-    background: rgba(15, 23, 42, 0.65); /* Đen mờ */
+    background: rgba(15, 23, 42, 0.65); 
     backdrop-filter: blur(20px) saturate(150%);
     display: inline-block; 
     padding: 45px 55px; 
@@ -147,7 +147,7 @@ ul#playerList li::before { content: "►"; color: #00f2fe; margin-right: 10px; f
 .danger-bar { background: #ff416c !important; box-shadow: 0 0 15px #ff416c !important; }
 .danger-text { color: #ff416c !important; animation: pulseText 0.5s infinite; }
 
-/* KHU VỰC THẺ BÀI - THIẾT KẾ SCI-FI */
+/* KHU VỰC THẺ BÀI - THIẾT KẾ SCI-FI NỔI BẬT */
 .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; max-width: 1050px; margin: 0 auto; perspective: 1000px; }
 .locked { pointer-events: none; opacity: 0.8; }
 
@@ -159,7 +159,6 @@ ul#playerList li::before { content: "►"; color: #00f2fe; margin-right: 10px; f
 .card:hover:not(.flipped) { transform: translateY(-6px) scale(1.02); }
 .card.flipped { transform: rotateY(180deg); }
 
-/* Hiệu ứng bốc hơi đẹp mắt */
 .card.matched {
     opacity: 0; transform: scale(0.5) rotate(10deg); filter: brightness(2) blur(5px);
     pointer-events: none; transition: all 0.6s cubic-bezier(0.5, 0, 0, 1); 
@@ -169,34 +168,33 @@ ul#playerList li::before { content: "►"; color: #00f2fe; margin-right: 10px; f
     position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
     border-radius: 16px; display: flex; align-items: center; justify-content: center;
     padding: 8px; text-align: center; overflow: hidden;
-    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.6); 
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.8); 
 }
 
-/* Mặt trước (Lưng bài) - Đen nhám vân Carbon Tech */
+/* MẶT TRƯỚC (Lưng bài) - Đổi sang màu Xám Thép (Slate) để nổi bật trên nền đen */
 .card-front { 
-    background: #0f172a; 
-    border: 2px solid #334155; 
+    background: linear-gradient(135deg, #334155 0%, #1e293b 100%); 
+    border: 2px solid #64748b; 
     color: transparent; 
-    /* Vân Carbon điện tử chìm */
-    background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 8px);
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+    /* Vân sọc chìm tạo cảm giác kim loại */
+    background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 10px);
 }
 
-/* Quản trò soi bài */
+/* QUẢN TRÒ SOI BÀI - Chữ hiện màu Neon sáng rực trên nền xám thép */
 .gm-view .card-front { 
-    color: rgba(255, 255, 255, 0.5); 
-    background: #0b1120; 
+    color: #00f2fe; 
+    text-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
     border-color: #00f2fe;
-    box-shadow: inset 0 0 15px rgba(0,242,254,0.1);
+    box-shadow: inset 0 0 15px rgba(0,242,254,0.2);
 }
 
-/* Mặt sau (Khi lật lên) - Phát sáng Neon */
+/* MẶT SAU (Khi lật lên) - Nền Bảng LED Siêu Sáng, Chữ Siêu Đậm */
 .card-back { 
-    background: #0f172a; 
-    border: 2px solid #00f2fe; /* Mặc định viền phát sáng xanh cyan */
-    color: #f8fafc; 
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); 
+    border: 2px solid #ffffff; 
+    color: #080c17; /* Chữ màu Đen/Xanh navy cực đậm để tương phản 100% với nền sáng */
     transform: rotateY(180deg); 
-    box-shadow: 0 0 20px rgba(0, 242, 254, 0.2), inset 0 0 15px rgba(0, 242, 254, 0.1);
+    box-shadow: 0 0 25px rgba(0, 242, 254, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
 /* BẢNG KẾT QUẢ CUỐI GAME */
