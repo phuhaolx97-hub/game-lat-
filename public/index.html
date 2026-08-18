@@ -3,50 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Lật Thẻ Đối Kháng</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>Game Lật Thẻ Đối Kháng - Pro Edition</title>
+    <!-- Phông chữ Google (Nunito cho chữ thường, Orbitron cho điểm số/tiêu đề game) -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="mainMenu" class="panel">
         <h1 class="game-title">TRÒ CHƠI LẬT THẺ</h1>
-        <button id="btnShowCreate" class="glow-on-hover">Tạo phòng mới (Làm Quản trò)</button>
+        <div class="subtitle">PRO ESPORTS EDITION</div>
+        <button id="btnShowCreate" class="glow-on-hover mt-4">Tạo phòng mới (Làm Quản trò)</button>
         <button id="btnShowJoin" class="glow-on-hover">Vào phòng đã có (Người chơi)</button>
     </div>
 
     <div id="hostPanel" class="panel" style="display: none;">
-        <h2>Mã phòng: <span id="hostRoomCode" class="highlight-text">----</span></h2>
-        <div id="gmSettings">
+        <h2>MÃ PHÒNG</h2>
+        <h1 id="hostRoomCode" class="highlight-text" style="font-size: 4em; margin: 10px 0;">----</h1>
+        <div id="gmSettings" class="setting-box">
             <label>Thời gian tổng (giây): </label>
             <input type="number" id="timeInput" value="60">
         </div>
         <div class="player-list-box">
-            <p>Người chơi đã vào: <span id="playerCount">0</span>/2</p>
+            <p style="color: #8892b0; font-weight: bold; text-transform: uppercase;">Người chơi đã vào: <span id="playerCount" style="color: #00f2fe;">0</span>/2</p>
             <ul id="playerList"></ul>
         </div>
-        <button id="btnStartGame" class="glow-on-hover" disabled>BẮT ĐẦU GAME</button>
+        <button id="btnStartGame" class="glow-on-hover" disabled>BẮT ĐẦU TRẬN ĐẤU</button>
         <button id="btnBackFromHost" class="btn-secondary">Quay lại</button>
     </div>
 
     <div id="joinPanel" class="panel" style="display: none;">
-        <h2>THAM GIA TRẬN ĐẤU</h2>
+        <h2 style="margin-bottom: 20px;">THAM GIA TRẬN ĐẤU</h2>
         <input type="text" id="joinRoomCode" placeholder="Nhập mã phòng" maxlength="4"><br>
         <input type="text" id="joinPlayerName" placeholder="Tên của bạn" maxlength="15"><br>
-        <button id="btnJoinRoom" class="glow-on-hover">Vào Phòng</button>
+        <button id="btnJoinRoom" class="glow-on-hover" style="margin-top: 20px;">Vào Phòng</button>
         <button id="btnBackFromJoin" class="btn-secondary">Quay lại</button>
-        <h3 id="waitingMsg" class="pulsing-text" style="display: none;">Đang chờ chủ phòng bắt đầu...</h3>
+        <h3 id="waitingMsg" class="pulsing-text" style="display: none;">Đang kết nối hệ thống... chờ Quản trò!</h3>
     </div>
 
     <div id="gameArea" style="display: none;">
         <div class="top-info">
             <div class="badge">Phòng: <span id="roomDisplay"></span></div>
-            <div class="badge" id="timerDisplay">Tổng T.Gian: <span>--</span>s</div>
-            <div class="badge">Vai trò: <span id="roleDisplay"></span></div>
+            <div class="badge timer-badge" id="timerDisplay">Tổng T.Gian: <span>--</span>s</div>
+            <div class="badge">Vai trò: <span id="roleDisplay" style="color: #f1c40f;"></span></div>
         </div>
 
-        <!-- MỚI: Bảng điều khiển riêng của Quản trò (Chỉ GM mới thấy) -->
-        <div id="gmControls" style="display: none; margin-bottom: 20px;">
-            <button id="btnToggleView" class="glow-on-hover" style="background: linear-gradient(45deg, #e74c3c, #c0392b); padding: 10px 20px; font-size: 14px;">
+        <div id="gmControls" style="display: none; margin-bottom: 25px;">
+            <button id="btnToggleView" class="glow-on-hover" style="background: linear-gradient(45deg, #e74c3c, #c0392b); padding: 12px 25px; font-size: 14px; border: 1px solid #ff7979;">
                 👁️ ẨN ĐÁP ÁN (Đang Mở)
             </button>
         </div>
@@ -58,7 +60,8 @@
             </div>
             
             <div class="turn-status">
-                <h3 id="turnText">LƯỢT CỦA: <span id="currentTurnName">---</span></h3>
+                <h3 id="turnText">ĐANG LƯỢT CỦA</h3>
+                <div id="currentTurnName">---</div>
                 <div id="turnIndicatorContainer">
                     <div id="turnBar"></div>
                 </div>
@@ -76,22 +79,22 @@
 
     <div id="overlay"></div>
     <div id="gameOverPanel" class="panel">
-        <h2 style="color: #ccc; margin-bottom: 5px;">KẾT QUẢ TRẬN ĐẤU</h2>
-        <h1 id="winnerText" class="highlight-text" style="font-size: 3em; margin-bottom: 25px;">---</h1>
+        <h3 style="color: #64ffda; letter-spacing: 3px; font-weight: 900; margin-bottom: 10px;">MATCH FINISHED</h3>
+        <h1 id="winnerText" class="highlight-text" style="font-size: 3em; margin-bottom: 30px; text-shadow: 0 0 20px rgba(255,215,0,0.5);">---</h1>
         
         <div class="final-score-board">
             <div class="final-p1">
-                <div id="finalNameP1" style="font-size: 20px;">P1</div>
-                <div id="finalScoreP1" style="font-size: 45px; font-weight: 900; color: #00f2fe;">0</div>
+                <div id="finalNameP1" class="final-name">P1</div>
+                <div id="finalScoreP1" class="final-score p1-color">0</div>
             </div>
-            <div style="font-size: 30px; font-weight: bold; margin: 0 20px;">VS</div>
+            <div class="vs-text">VS</div>
             <div class="final-p2">
-                <div id="finalNameP2" style="font-size: 20px;">P2</div>
-                <div id="finalScoreP2" style="font-size: 45px; font-weight: 900; color: #38ef7d;">0</div>
+                <div id="finalNameP2" class="final-name">P2</div>
+                <div id="finalScoreP2" class="final-score p2-color">0</div>
             </div>
         </div>
 
-        <button id="btnBackToLobby" class="glow-on-hover" style="margin-top: 25px;">Về sảnh chính</button>
+        <button id="btnBackToLobby" class="glow-on-hover" style="margin-top: 30px;">TRỞ VỀ SẢNH CHÍNH</button>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
