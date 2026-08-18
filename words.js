@@ -16,12 +16,13 @@ function generateDeck() {
     let deck = [];
     
     baseWords.forEach(word => {
-        // Dùng clamp() để chữ tự động co giãn to/nhỏ tùy theo độ lớn của màn hình
-        // Dùng word-break: break-word; để chữ dài tự động rớt xuống dòng thay vì tràn ra ngoài
+        // - Thay thế word-break bằng white-space: nowrap để tuyệt đối CẤM XUỐNG DÒNG.
+        // - Giảm max font-size của tiếng Anh xuống 18px để các từ dài như TRANSPARENCY luôn nằm lọt lòng.
+        // - Xóa bỏ mã màu #f1c40f, thay bằng opacity: 0.75 để màu tự ăn theo mặt trước/sau của thẻ.
         const cardHTML = `
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;">
-                <span style="font-size: clamp(14px, 1.8vw, 24px); font-weight: 900; word-break: break-word; width: 100%; text-align: center; line-height: 1.1;">${word.en}</span>
-                <span style="font-size: clamp(10px, 1.1vw, 14px); font-weight: 700; color: #f1c40f; text-transform: uppercase; margin-top: 8px; word-break: break-word; width: 100%; text-align: center; line-height: 1.1;">${word.vi}</span>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; overflow: hidden;">
+                <span style="font-size: clamp(11px, 1.5vw, 18px); font-weight: 900; white-space: nowrap; letter-spacing: -0.5px; width: 100%; text-align: center;">${word.en}</span>
+                <span style="font-size: clamp(9px, 1.1vw, 12px); font-weight: 700; opacity: 0.75; text-transform: uppercase; margin-top: 5px; white-space: nowrap; width: 100%; text-align: center;">${word.vi}</span>
             </div>
         `;
         
