@@ -1,6 +1,5 @@
 // File: words.js
 
-// Danh sách 9 cặp từ vựng từ hình ảnh
 const baseWords = [
     { en: "AI", vi: "Trí tuệ nhân tạo" },
     { en: "ALGORITHM", vi: "Thuật ngữ" }, 
@@ -17,11 +16,12 @@ function generateDeck() {
     let deck = [];
     
     baseWords.forEach(word => {
-        // Thiết kế Layout: Tiếng Anh to ở trên, Tiếng Việt nhỏ màu vàng ở dưới
+        // Dùng clamp() để chữ tự động co giãn to/nhỏ tùy theo độ lớn của màn hình
+        // Dùng word-break: break-word; để chữ dài tự động rớt xuống dòng thay vì tràn ra ngoài
         const cardHTML = `
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3;">
-                <span style="font-size: 24px; font-weight: 900;">${word.en}</span>
-                <span style="font-size: 14px; font-weight: 700; color: #f1c40f; text-transform: uppercase; margin-top: 4px;">${word.vi}</span>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;">
+                <span style="font-size: clamp(14px, 1.8vw, 24px); font-weight: 900; word-break: break-word; width: 100%; text-align: center; line-height: 1.1;">${word.en}</span>
+                <span style="font-size: clamp(10px, 1.1vw, 14px); font-weight: 700; color: #f1c40f; text-transform: uppercase; margin-top: 8px; word-break: break-word; width: 100%; text-align: center; line-height: 1.1;">${word.vi}</span>
             </div>
         `;
         
@@ -29,7 +29,6 @@ function generateDeck() {
         deck.push({ text: cardHTML, matchId: word.en }); 
     });
 
-    // Trộn bài ngẫu nhiên
     for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [deck[i], deck[j]] = [deck[j], deck[i]];
