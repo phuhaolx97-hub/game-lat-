@@ -1,35 +1,34 @@
 // File: words.js
 
-const baseWords = [
-    { en: "AI", vi: "Trí tuệ nhân tạo" },
-    { en: "ALGORITHM", vi: "Thuật ngữ" }, 
-    { en: "RESEARCH", vi: "Nghiên cứu" },
-    { en: "SUMMARY", vi: "Tóm tắt" },
-    { en: "DATABASE", vi: "Cơ sở dữ liệu" },
-    { en: "LLMs", vi: "Ngôn ngữ lớn" },
-    { en: "DATA", vi: "Dữ liệu" },
-    { en: "TRANSPARENCY", vi: "Tính minh bạch" },
-    { en: "ADVANTAGE", vi: "Lợi thế" }
+// Danh sách các "Hình ảnh" động vật (Dùng Emoji độ phân giải cao để thay thế hình ảnh)
+const baseAnimals = [
+    { id: "Sư tử", img: "🦁" },
+    { id: "Hổ", img: "🐯" }, 
+    { id: "Gấu trúc", img: "🐼" },
+    { id: "Cáo", img: "🦊" },
+    { id: "Heo", img: "🐷" },
+    { id: "Ếch", img: "🐸" },
+    { id: "Khỉ", img: "🐵" },
+    { id: "Cánh cụt", img: "🐧" },
+    { id: "Koala", img: "🐨" }
 ];
 
 function generateDeck() {
     let deck = [];
     
-    baseWords.forEach(word => {
-        // - Thay thế word-break bằng white-space: nowrap để tuyệt đối CẤM XUỐNG DÒNG.
-        // - Giảm max font-size của tiếng Anh xuống 18px để các từ dài như TRANSPARENCY luôn nằm lọt lòng.
-        // - Xóa bỏ mã màu #f1c40f, thay bằng opacity: 0.75 để màu tự ăn theo mặt trước/sau của thẻ.
+    baseAnimals.forEach(animal => {
+        // Biến Emoji thành một bức ảnh khổng lồ có đổ bóng
         const cardHTML = `
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; overflow: hidden;">
-                <span style="font-size: clamp(11px, 1.5vw, 18px); font-weight: 900; white-space: nowrap; letter-spacing: -0.5px; width: 100%; text-align: center;">${word.en}</span>
-                <span style="font-size: clamp(9px, 1.1vw, 12px); font-weight: 700; opacity: 0.75; text-transform: uppercase; margin-top: 5px; white-space: nowrap; width: 100%; text-align: center;">${word.vi}</span>
+            <div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
+                <span class="animal-icon" style="font-size: clamp(40px, 5vw, 65px); filter: drop-shadow(0px 8px 6px rgba(0,0,0,0.2)); margin-top: -5px;">${animal.img}</span>
             </div>
         `;
         
-        deck.push({ text: cardHTML, matchId: word.en }); 
-        deck.push({ text: cardHTML, matchId: word.en }); 
+        deck.push({ text: cardHTML, matchId: animal.id }); 
+        deck.push({ text: cardHTML, matchId: animal.id }); 
     });
 
+    // Trộn bài ngẫu nhiên
     for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [deck[i], deck[j]] = [deck[j], deck[i]];
