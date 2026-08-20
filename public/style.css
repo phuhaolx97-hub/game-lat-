@@ -3,35 +3,32 @@
 body {
     font-family: 'Quicksand', sans-serif; 
     text-align: center;
-    /* Nền bầu trời xanh mây trắng + bãi cỏ */
     background: linear-gradient(to bottom, #87CEFA 0%, #E0F6FF 40%, #A8E6CF 100%);
-    color: #5D4037; /* Chữ màu nâu gỗ */
+    color: #5D4037;
     min-height: 100vh;
     padding: 20px;
     overflow-x: hidden;
 }
 
-/* Typography Bầu bĩnh */
 .game-title, .score-num, #timerDisplay span, #turnTimeText, #winnerText, #hostRoomCode, .final-score {
     font-family: 'Baloo 2', cursive;
 }
 
 .game-title { 
     font-size: 3.5rem; 
-    color: #FF7043; /* Cam tươi */
+    color: #FF7043; 
     text-shadow: 2px 2px 0px #FFF, 5px 5px 0px rgba(0,0,0,0.1); 
     margin-bottom: 5px; 
     line-height: 1.2;
 }
 .subtitle { font-size: 18px; color: #43A047; margin-bottom: 30px; font-weight: 800; }
 
-/* Khối Panel mềm mại (như đám mây) */
 .panel {
     margin-top: 20px; 
     background: rgba(255, 255, 255, 0.9); 
     display: inline-block; 
     padding: 40px 50px; 
-    border-radius: 40px; /* Bo tròn mạnh */
+    border-radius: 40px;
     border: 5px solid #FFF; 
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
@@ -52,7 +49,6 @@ input {
 }
 input:focus { border-color: #2196F3; box-shadow: 0 0 15px rgba(33, 150, 243, 0.3); }
 
-/* Nút bấm kẹo ngọt (Jelly Buttons) */
 .btn-cute {
     padding: 15px 35px; font-size: 18px; margin: 10px; border-radius: 30px;
     border: none; color: white; font-weight: 900; font-family: 'Baloo 2', cursive;
@@ -83,7 +79,6 @@ ul#playerList li::before { content: "🐾"; margin-right: 10px; font-size: 16px;
 .pulsing-text { color: #43A047; animation: pulseText 1.5s infinite; margin-top: 20px; }
 @keyframes pulseText { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-/* HUD Top Info */
 .top-info { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
 .badge { 
     background: #FFF; padding: 12px 25px; border-radius: 20px; 
@@ -93,7 +88,6 @@ ul#playerList li::before { content: "🐾"; margin-right: 10px; font-size: 16px;
 .timer-badge { border-color: #FF8A65; box-shadow: 0 4px 0px #FF8A65; }
 #timerDisplay span { color: #E53935; font-size: 1.4em; }
 
-/* Bảng điểm 2 bên */
 #scoreboard { display: flex; justify-content: center; align-items: center; gap: 40px; margin-bottom: 30px; }
 
 .score-box { 
@@ -112,7 +106,6 @@ ul#playerList li::before { content: "🐾"; margin-right: 10px; font-size: 16px;
 .active-p2 .player-name { color: #43A047; }
 .active-p2 .score-num { color: #43A047; }
 
-/* Thanh hiển thị lượt */
 .turn-status { 
     width: 280px; background: #FFF; padding: 15px; 
     border-radius: 25px; border: 3px solid #FFF59D; box-shadow: 0 8px 0 #FFF59D;
@@ -126,13 +119,12 @@ ul#playerList li::before { content: "🐾"; margin-right: 10px; font-size: 16px;
 .danger-bar { background: #EF5350 !important; }
 .danger-text { color: #D32F2F !important; animation: pulseText 0.5s infinite; }
 
-/* KHU VỰC THẺ BÀI - THIẾT KẾ RỪNG XANH */
 .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; max-width: 950px; margin: 0 auto; perspective: 1000px; }
 .locked { pointer-events: none; opacity: 0.8; }
 
 .card {
     width: 100%; aspect-ratio: 1 / 1; position: relative;
-    transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Hiệu ứng lật nẩy nẩy */
+    transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
     cursor: pointer;
 }
 .card:hover:not(.flipped) { transform: translateY(-5px) scale(1.05); }
@@ -149,30 +141,36 @@ ul#playerList li::before { content: "🐾"; margin-right: 10px; font-size: 16px;
     overflow: hidden; box-shadow: 0 8px 15px rgba(0,0,0,0.15); 
 }
 
-/* Mặt trước (Lưng bài) - Họa tiết bãi cỏ xanh */
 .card-front { 
     background: #81C784; 
     border: 4px solid #4CAF50; 
-    /* Tạo vân chấm bi trang trí nhẹ nhàng */
     background-image: radial-gradient(#66BB6A 15%, transparent 16%), radial-gradient(#66BB6A 15%, transparent 16%);
     background-size: 30px 30px;
     background-position: 0 0, 15px 15px;
 }
 
-/* Quản trò soi bài - Hình thú hiện mờ mờ trên nền xanh */
-.gm-view .card-front .animal-icon { 
-    opacity: 0.3;
-    filter: grayscale(80%) drop-shadow(0 0 0 rgba(0,0,0,0));
+/* --- ĐÂY LÀ ĐOẠN SỬA LỖI --- */
+/* Mặc định: Giấu hoàn toàn hình động vật khi nút Tàng hình bị tắt */
+.card-front .animal-icon {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s;
 }
 
-/* Mặt sau (Khi lật lên) - Nền vàng kem dễ thương */
+/* Khi GM bật nút Hiện đáp án: Hình mới hiện lên mờ mờ */
+.gm-view .card-front .animal-icon { 
+    opacity: 0.35;
+    visibility: visible;
+    filter: grayscale(40%);
+}
+/* --------------------------- */
+
 .card-back { 
     background: #FFF9C4; 
     border: 4px solid #FBC02D; 
     transform: rotateY(180deg); 
 }
 
-/* BẢNG KẾT QUẢ CUỐI GAME */
 #overlay {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(5px);

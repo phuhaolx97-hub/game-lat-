@@ -14,7 +14,7 @@ const playerListUI = document.getElementById('playerList');
 const playerCountUI = document.getElementById('playerCount');
 const waitingMsg = document.getElementById('waitingMsg');
 
-// Lấy 2 phần tử mới của nút Quản trò
+// Nút Quản trò
 const gmControls = document.getElementById('gmControls');
 const btnToggleView = document.getElementById('btnToggleView');
 
@@ -27,6 +27,8 @@ document.getElementById('btnShowCreate').addEventListener('click', () => socket.
 document.getElementById('btnShowJoin').addEventListener('click', () => {
     mainMenu.style.display = 'none'; joinPanel.style.display = 'inline-block';
 });
+
+// Nút quay về sảnh (Load lại trang)
 document.getElementById('btnBackFromHost').addEventListener('click', () => location.reload());
 document.getElementById('btnBackFromJoin').addEventListener('click', () => location.reload());
 document.getElementById('btnBackToLobby').addEventListener('click', () => location.reload());
@@ -48,11 +50,14 @@ document.getElementById('btnJoinRoom').addEventListener('click', () => {
 socket.on('playerUpdate', (players) => {
     playerCountUI.innerText = players.length; playerListUI.innerHTML = '';
     players.forEach(p => {
-        const li = document.createElement('li'); li.innerText = `🎮 ${p.name}`; playerListUI.appendChild(li);
+        const li = document.createElement('li'); li.innerText = `🐾 ${p.name}`; playerListUI.appendChild(li);
     });
     if (players.length === 2 && myRole === 'GM') {
         btnStartGame.disabled = false;
-        btnStartGame.style.background = "linear-gradient(45deg, #11998e, #38ef7d)";
+        // Đổi màu nút Bắt đầu khi đủ người (Đỏ nổi bật)
+        btnStartGame.style.background = "#FF7043";
+        btnStartGame.style.boxShadow = "0 6px 0px #D84315, 0 10px 10px rgba(0,0,0,0.1)";
+        btnStartGame.style.color = "#FFF";
     }
 });
 
@@ -83,13 +88,14 @@ socket.on('gameStarted', ({ deck, players }) => {
 
     const cardGrid = document.getElementById('cardGrid'); cardGrid.innerHTML = ''; 
     
-    // MỚI: Nếu là GM thì hiện nút bấm và bật soi chữ
+    // Xử lý giao diện Quản trò (GM)
     if (myRole === 'GM') {
         cardGrid.classList.add('gm-view');
         gmControls.style.display = 'block';
-        // Reset nút về mặc định
+        // Trạng thái nút mặc định khi vào game
         btnToggleView.innerText = "👁️ ẨN ĐÁP ÁN (Đang Mở)";
-        btnToggleView.style.background = "linear-gradient(45deg, #e74c3c, #c0392b)";
+        btnToggleView.style.background = "#E53935"; 
+        btnToggleView.style.boxShadow = "0 6px 0px #B71C1C";
     } else {
         cardGrid.classList.remove('gm-view');
         gmControls.style.display = 'none';
@@ -111,19 +117,21 @@ socket.on('gameStarted', ({ deck, players }) => {
     });
 });
 
-// MỚI: Logic nhấn nút Ẩn/Hiện dành cho GM
+// Logic nhấn nút Ẩn/Hiện dành cho GM (Giao diện kẹo dẻo / Jelly)
 btnToggleView.addEventListener('click', () => {
     const cardGrid = document.getElementById('cardGrid');
     cardGrid.classList.toggle('gm-view'); // Bật/Tắt soi bài
     
     if (cardGrid.classList.contains('gm-view')) {
-        // Trạng thái đang soi bài -> Nút màu Đỏ mời bấm Ẩn
+        // Đang soi -> Mời bấm Ẩn (Nút Đỏ)
         btnToggleView.innerText = "👁️ ẨN ĐÁP ÁN (Đang Mở)";
-        btnToggleView.style.background = "linear-gradient(45deg, #e74c3c, #c0392b)";
+        btnToggleView.style.background = "#E53935"; 
+        btnToggleView.style.boxShadow = "0 6px 0px #B71C1C";
     } else {
-        // Trạng thái đã giấu bài -> Nút màu Xanh mời bấm Hiện
+        // Đang giấu -> Mời bấm Hiện (Nút Xanh)
         btnToggleView.innerText = "🙈 HIỆN ĐÁP ÁN (Đang Ẩn)";
-        btnToggleView.style.background = "linear-gradient(45deg, #2ecc71, #27ae60)";
+        btnToggleView.style.background = "#43A047"; 
+        btnToggleView.style.boxShadow = "0 6px 0px #1B5E20";
     }
 });
 
@@ -159,18 +167,18 @@ socket.on('turnChanged', (turn) => {
     const turnNameUI = document.getElementById('currentTurnName');
     const turnBar = document.getElementById('turnBar');
 
-    turnBar.style.background = turn === 'P1' ? '#00f2fe' : '#38ef7d';
+    turnBar.style.background = turn === 'P1' ? '#42A5F5' : '#66BB6A';
 
     if (turn === 'P1') {
         boxP1.className = 'score-box active-p1';
         boxP2.className = 'score-box';
         turnNameUI.innerText = p1Name;
-        turnNameUI.style.color = '#00f2fe';
+        turnNameUI.style.color = '#1E88E5';
     } else {
         boxP1.className = 'score-box';
         boxP2.className = 'score-box active-p2';
         turnNameUI.innerText = p2Name;
-        turnNameUI.style.color = '#38ef7d';
+        turnNameUI.style.color = '#43A047';
     }
 
     if (myRole === turn) document.getElementById('cardGrid').classList.remove('locked');
